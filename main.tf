@@ -22,24 +22,7 @@ resource "aws_instance" "terraform_instance" {
   EOF
 
   # Remote exec provisioner for Docker installation and container run
-  provisioner "remote-exec" {
-    inline = [
-      "sudo yum update -y",
-      "sudo yum install -y docker",
-      "sudo service docker start",
-      "sudo usermod -a -G docker ec2-user",
-      "sudo docker pull devopsike123/devospike:tag123",
-      "sudo docker run -p 80:8080 devopsike123/devospike:tag123"
-    ]
-
-    connection {
-      type        = "ssh"
-      user        = "ec2-user"  # Update according to your AMI
-      private_key = file("~/Downloads/aws-prod.pem")  # Path to your private key
-      host        = self.public_ip
-    }
-  }
-
+  
   tags = {
     Name = "terraform-docker-instance"
   }
